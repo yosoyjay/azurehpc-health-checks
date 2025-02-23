@@ -7,7 +7,7 @@ DOCK_IMG_NAME_AMD="azurenodehealthchecks.azurecr.io/staging/aznhc/aznhc-rocm"
 DOCK_CONT_NAME=aznhc
 
 
-function print_help() 
+function print_help()
 {
 cat << EOF
 
@@ -15,7 +15,7 @@ Usage: ./run-health-checks.sh [-h|--help] [-c|--config <path to an NHC .conf fil
 Run health checks on the current VM.
 
 -h, -help,          --help                  Display this help
--c, -config,        --config                Optional path to a custom NHC config file. 
+-c, -config,        --config                Optional path to a custom NHC config file.
                                             If not specified the current VM SKU will be detected and the appropriate conf file will be used.
 
 -o, -output,        --output                Optional path to output the health check logs to. All directories in the path must exist.
@@ -52,7 +52,7 @@ eval set -- "$options"
 while true
 do
 case "$1" in
--h|--help) 
+-h|--help)
     print_help
     exit 0
     ;;
@@ -119,7 +119,7 @@ if [ -z "$CONF_FILE" ]; then
     fi
 
     AN40=("nd96asr_v4" "nd96amsr_a100_v4" "hb120rs_v3" "hb120-96rs_v3" "hb120-64rs_v3" "hb120-32rs_v3" "hb120-16rs_v3" "hb120rs_v2")
-    AN100=("nc40ads_h100_v5" "nc80adis_h100_v5" "nd96isr_h100_v5" "nd96isr_mi300x_v5" "hb176rs_v4" "hb176-144rs_v4" "hb176-96rs_v4"  "hb176-48rs_v4" "hb176-24rs_v4" "hx176rs" "hx176-144rs" "hx176-96rs" "hx176-48rs" "hx176-24rs" "nc96ads_a100_v4" "nc48ads_a100_v4" "nc24ads_a100_v4")
+    AN100=("nc40ads_h100_v5" "nc80adis_h100_v5" "nd96isr_h100_v5" "nd96isr_mi300x_v5" "nd96isr_h200_v5" "hb176rs_v4" "hb176-144rs_v4" "hb176-96rs_v4"  "hb176-48rs_v4" "hb176-24rs_v4" "hx176rs" "hx176-144rs" "hx176-96rs" "hx176-48rs" "hx176-24rs" "nc96ads_a100_v4" "nc48ads_a100_v4" "nc24ads_a100_v4")
 
     if [[ " ${AN40[*]} " == *" $SKU "* ]]; then
         an_rate=40
@@ -216,7 +216,7 @@ fi
 echo "Running health checks using $CONF_FILE and outputting to $OUTPUT_PATH"
 
 if lspci | grep -iq NVIDIA ; then
-    NVIDIA_RT="--runtime=nvidia"
+    NVIDIA_RT="--gpus all"
     DOCK_IMG_NAME=$DOCK_IMG_NAME_NV
 elif lspci | grep -iq AMD ; then
     DOCK_IMG_NAME=$DOCK_IMG_NAME_AMD
